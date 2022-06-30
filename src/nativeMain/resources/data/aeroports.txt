@@ -1,4 +1,4 @@
-BML|Berlin|Berlin|NH|US
+BER|Berlin|Berlin|NH|US
 CDG|Ch. De Gaulle|Paris||FR
 MRS|Marseille|Marseille||FR
 LYS|Satolas|Lyon||FR

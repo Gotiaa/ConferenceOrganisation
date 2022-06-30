@@ -1,11 +1,8 @@
-import domain.model.Aeroport
-import domain.model.dataFlight
+import domain.model.FlightType
 import domain.use_case.CalculateCost
 import domain.use_case.FindFlight
 import domain.use_case.GetAeroports
 import domain.use_case.GetConferenciers
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlin.math.tanh
 
 fun main() {
     val calculateCost : CalculateCost = CalculateCost()
@@ -19,8 +16,11 @@ fun main() {
 
     val conferenciers = getConferenciers.invoke(getAeroport.invoke())
     conferenciers.forEach {
-        findFlight.invoke(it.aeroportDepart!!)?.let { dataFlight ->
-            totalCost += calculateCost.invoke(dataFlight)
+        findFlight.invoke(it.aeroportDepart!!, FlightType.RETOUR)?.let { dataFlight ->
+            totalCost += calculateCost.invoke(dataFlight, FlightType.RETOUR)
+        }
+        findFlight.invoke(it.aeroportDepart!!, FlightType.ALLER)?.let { dataFlight ->
+            totalCost += calculateCost.invoke(dataFlight, FlightType.ALLER)
         }
     }
 

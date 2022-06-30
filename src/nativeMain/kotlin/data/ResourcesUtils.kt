@@ -1,20 +1,39 @@
 package data
 
 import domain.model.Aeroport
+import domain.model.FlightType
 import okio.FileSystem
 import okio.Path
 import okio.Path.Companion.toPath
 
-const val resource_path = "./src/nativeMain/resources/data/07-26"
+const val resource_path = "./src/nativeMain/resources/data/"
 const val code_london_aeroport = "LHR"
 
-fun findRightFile(startAeroport: Aeroport) : Path? {
+val volsAller = listOf<String>("07-26", "07-27")
+val volsRetour = listOf<String>("08-03", "08-04")
+fun findRightFile(conferencierAeroport: Aeroport, flightType: FlightType) : List<Path>? {
+    var filesToExplore = mutableListOf<String>()
+    var startCode = ""
+    var destinationCode = ""
+    if (FlightType.ALLER == flightType) {
+        filesToExplore = volsAller.toMutableList()
+        startCode = conferencierAeroport.code!!
+        destinationCode = code_london_aeroport
+    } else {
+        filesToExplore = volsRetour.toMutableList()
+        startCode = code_london_aeroport
+        destinationCode = conferencierAeroport.code!!
+    }
+    if (conferencierAeroport.code == null || filesToExplore.size == 0) {
+        return null
+    }
 
-    var fileFound = if (startAeroport.code != null) {
-        val path = resource_path + "/" + startAeroport.code + "-" + code_london_aeroport + ".json"
+    val paths = mutableListOf<Path>()
+
+    filesToExplore.forEach { folderName ->
+        val path = resource_path + folderName + "/" + startCode + "-" + destinationCode + ".json"
         val searchFile = FileSystem.SYSTEM.exists(path.toPath())
-        if (searchFile) path.toPath() else null
-    } else null
-    return fileFound
-
+        if (searchFile) paths.add(path.toPath())
+    }
+    return paths
 }
