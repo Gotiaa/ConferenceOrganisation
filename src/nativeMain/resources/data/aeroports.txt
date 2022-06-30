@@ -1,0 +1,16 @@
+BML|Berlin|Berlin|NH|US
+CDG|Ch. De Gaulle|Paris||FR
+MRS|Marseille|Marseille||FR
+LYS|Satolas|Lyon||FR
+MAN|Manchester|Manchester||UK
+BIO|Bilbao|Bilbao||ES
+JFK|John F Kennedy Intl|New York|NY|US
+TUN|Carthage|Tunis||TN
+MXP|Malpensa|Milan||IT
+LHR|Heathrow|London||UK
+LGW|Gatwick|London||UK
+BQH|Biggin Hill|London||UK
+STN|Stansted|London||UK
+LON|All airports|London||UK
+LTN|Luton Airport|London||UK
+LCY|London City Airport|London||UK
