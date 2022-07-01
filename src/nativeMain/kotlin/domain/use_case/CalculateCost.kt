@@ -5,19 +5,20 @@ import common.Constants.CONFERENCE_START_DATE
 import common.Constants.MINUTE_COST
 import common.utils.differenceTime
 import common.utils.toDateTransition
-import common.utils.toHours
+import domain.model.Cost
 import domain.model.FlightType
-import domain.model.Flights
 import domain.model.dataFlight
 
 class CalculateCost {
-    operator fun invoke(flight: dataFlight,flightType: FlightType, print : Boolean = false) : Double {
-        val cost = calculateCost(flight, flightType)
-        if (print) println("Prix du vol : ${flight.price}€ \nPrix de l'attente : $cost€ \nPrix total : ${flight.price?.plus(cost)}€")
-        return cost + flight.price?.toDouble()!!
+    operator fun invoke(volAller: dataFlight, volRetour : dataFlight, print : Boolean = false) : Cost {
+        return Cost (
+            prixVolAller = volAller.price!!.toDouble(),
+            prixVolRetour = volRetour.price!!.toDouble(),
+            waitCostAller = calculateCostOfWait(volAller, FlightType.ALLER),
+            waitCostRetour = calculateCostOfWait(volRetour, FlightType.RETOUR),
+        )
     }
-
-    private fun calculateCost(flight: dataFlight, flightType: FlightType) : Double {
+    private fun calculateCostOfWait(flight: dataFlight, flightType: FlightType) : Double {
         return flight.timeCost(flightType)
     }
 }
@@ -28,6 +29,5 @@ fun dataFlight.timeCost(flightType : FlightType) : Double {
     } else {
         differenceTime(this.arrive!!.toDateTransition(), CONFERENCE_END_DATE.toDateTransition())
     }
-    println("Temps d'attente : $waintingTime minutes (${waintingTime.toHours()}h)")
     return MINUTE_COST.toDouble() * waintingTime
 }

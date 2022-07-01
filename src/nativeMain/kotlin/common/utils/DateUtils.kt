@@ -6,8 +6,9 @@ import kotlinx.datetime.*
 fun differenceTime(date1 : DateTransition, date2 : DateTransition) : Double {
     val localDateTime1 = date1.toLocalDateTime()
     val localDateTime2 = date2.toLocalDateTime()
-    val differenceMin = localDateTime2.toInstant(TimeZone.UTC).until(localDateTime1.toInstant(TimeZone.UTC), DateTimeUnit.MINUTE)
+    var differenceMin = localDateTime2.toInstant(TimeZone.UTC).until(localDateTime1.toInstant(TimeZone.UTC), DateTimeUnit.MINUTE)
     localDateTime1.toInstant(TimeZone.UTC)
+    if (differenceMin < 0) differenceMin = differenceMin*-1
     return differenceMin.toDouble()
 }
 

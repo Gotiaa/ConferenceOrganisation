@@ -33,7 +33,6 @@ class FindFlight() {
             isFlightValid = tab[randomIndex].isFlightValid(flightType)
         }
         val finalResult = tab[randomIndex]
-        println("J'ai trouvé le vol suivant : $finalResult")
         return finalResult
     }
 

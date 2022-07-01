@@ -1,3 +1,5 @@
+import common.toTotalCost
+import domain.model.Cost
 import domain.model.FlightType
 import domain.use_case.CalculateCost
 import domain.use_case.FindFlight
@@ -11,19 +13,22 @@ fun main() {
     val getConferenciers : GetConferenciers = GetConferenciers()
 
     println("Starting ...")
-
-    var totalCost : Double = Double.MIN_VALUE
+    val costs = mutableListOf<Cost>()
 
     val conferenciers = getConferenciers.invoke(getAeroport.invoke())
-    conferenciers.forEach {
-        findFlight.invoke(it.aeroportDepart!!, FlightType.RETOUR)?.let { dataFlight ->
-            totalCost += calculateCost.invoke(dataFlight, FlightType.RETOUR)
-        }
-        findFlight.invoke(it.aeroportDepart!!, FlightType.ALLER)?.let { dataFlight ->
-            totalCost += calculateCost.invoke(dataFlight, FlightType.ALLER)
-        }
+    conferenciers.forEach { conferencier ->
+        val volAller = findFlight.invoke(conferencier.aeroportDepart!!, FlightType.ALLER)
+        val volRetour = findFlight.invoke(conferencier.aeroportDepart, FlightType.RETOUR)
+
+        val cost = calculateCost.invoke(
+            volAller = volAller!!,
+            volRetour = volRetour!!,
+        ).init()
+
+        costs.add(cost)
     }
 
-    println("Le voyage aller des conferenciers va couter : ${totalCost}€")
+    val totalCost = costs.toTotalCost()
+    println(totalCost.toString())
     println("Ending ...")
 }
