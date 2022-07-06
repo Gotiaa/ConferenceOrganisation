@@ -1,4 +1,4 @@
-## Projet conférence de Londre de Tiago Goncalves S09
+## Projet conférence de Londres de Tiago Goncalves S09
 
 # ConferenceOrganisation
 
