@@ -11,12 +11,11 @@ import data.getJsonStringifyByPath
 import domain.model.Aeroport
 import domain.model.FlightType
 import domain.model.dataFlight
-import platform.posix.optional_argument
 import kotlin.random.Random
 
 class FindFlight() {
 
-    operator fun invoke(start : Aeroport, flightType: FlightType) : dataFlight? {
+    operator fun invoke(start : Aeroport, flightType: FlightType, voisinOf: dataFlight? = null) : dataFlight? {
         val paths = findRightFile(start, flightType)
         var tab : Array<dataFlight> = emptyArray()
 
@@ -25,25 +24,44 @@ class FindFlight() {
             val tableauConverti = stringJson!!.getFlightsArrayFromJsonStringify()
             tab += tableauConverti
         }
-
-        var isFlightValid = false
-        var randomIndex : Int = 0
-        while (isFlightValid == false) {
-            randomIndex = Random.nextInt(tab.size)
-            isFlightValid = tab[randomIndex].isFlightValid(flightType)
+        var finalResult : dataFlight? = null
+        if (voisinOf == null) {
+            var isFlightValid = false
+            var randomIndex : Int = 0
+            while (!isFlightValid) {
+                randomIndex = Random.nextInt(tab.size)
+                isFlightValid = tab[randomIndex].isFlightValid(flightType)
+            }
+            finalResult = tab[randomIndex]
         }
-        val finalResult = tab[randomIndex]
+        else {
+            var index : Int? = null
+            for ((i, value) in tab.distinct().withIndex()) {
+                if (value.depart == voisinOf.depart && value.arrive == voisinOf.arrive){
+                    index = i
+                }
+
+            }
+            index.let { i ->
+                if (i != null) {
+                    if (tab[i+1].isFlightValid(flightType)) {
+                        finalResult = tab[i+1]
+                    } else if (tab[i-1].isFlightValid(flightType)) {
+                        finalResult = tab[i-1]
+                    } else finalResult = tab[i]
+                }
+            }
+        }
         return finalResult
     }
 
-    fun dataFlight.isFlightValid(flightType: FlightType) : Boolean {
+    private fun dataFlight.isFlightValid(flightType: FlightType) : Boolean {
         val comparaisonDate = if (flightType == FlightType.ALLER ) CONFERENCE_START_DATE else CONFERENCE_END_DATE
         val isBefore = this.arrive?.toDateTransition()?.toLocalDateTime()?.isBefore(comparaisonDate.toDateTransition().toLocalDateTime())
         return isBefore ?: false
     }
 
-    fun String.getFlightsArrayFromJsonStringify() : Array<dataFlight> {
-        val result = buildObjectFromJsonString(this)?.flights?.flight ?: emptyArray()
-        return result
+    private fun String.getFlightsArrayFromJsonStringify(): Array<dataFlight> {
+        return buildObjectFromJsonString(this)?.flights?.flight ?: emptyArray()
     }
 }

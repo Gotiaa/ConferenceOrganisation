@@ -3,6 +3,7 @@ package domain.use_case
 import common.Constants.CONFERENCE_END_DATE
 import common.Constants.CONFERENCE_START_DATE
 import common.Constants.MINUTE_COST
+import common.Constants.STOP_COST
 import common.utils.differenceTime
 import common.utils.toDateTransition
 import domain.model.Cost
@@ -29,5 +30,7 @@ fun dataFlight.timeCost(flightType : FlightType) : Double {
     } else {
         differenceTime(this.arrive!!.toDateTransition(), CONFERENCE_END_DATE.toDateTransition())
     }
-    return MINUTE_COST.toDouble() * waintingTime
+    var cost = MINUTE_COST.toDouble() * waintingTime
+    if (stops != null) cost += stops*STOP_COST
+    return cost
 }

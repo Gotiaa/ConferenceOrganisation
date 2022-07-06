@@ -7,4 +7,5 @@ object Constants {
     const val CONFERENCE_END_DATE = "2010-08-03T14:00:00"
 
     const val MINUTE_COST = 1
+    const val STOP_COST = 100
 }
