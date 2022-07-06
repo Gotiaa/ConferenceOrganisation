@@ -20,3 +20,21 @@ Fait :
 Pas fait :( :
 - algo simulated annealing
 - algo génétique
+
+## C'est bien mais comment on run ?
+
+Quelques pré-recquis :
+
+Le plus simple est d'utiliser gradle pour build donc pour l'installer avec snap par exemple: 
+
+$ sudo snap install --classic gradle
+
+puis pour lancer le build depuis la racine du projet : 
+
+$ gradle nativeBinaries
+
+ensuite pour le lancer le fichier de build généré toujours depuis la racine du projet :
+
+$ ./build/bin/native/debugExecutable/conference.kexe
+
+et tada... ça marche (j'espère)
