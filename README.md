@@ -7,7 +7,7 @@ Dessiner un avion dans le terminal
 J'ai réalisé le projet en Kotlin pour progresser dans ce language. J'ai donc crée mon premier projet en koltin/native en codant sur intelliJ.
 J'ai fais un semblant de clean archi pour le beau jeu.
 
-## Fais/pasFait
+## Fait/pasFait
 
 Fait : 
 - Trouver un avion compatible parmit les vols dans les fichiers Json
