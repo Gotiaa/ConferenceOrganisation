@@ -21,9 +21,10 @@ Pas fait :( :
 - algo simulated annealing
 - algo génétique
 
-## C'est bien mais comment on run ?
 
-Quelques pré-recquis :
+## Run
+
+Quelques pré-requis :
 
 Le plus simple est d'utiliser gradle pour build donc pour l'installer avec snap par exemple: 
 
